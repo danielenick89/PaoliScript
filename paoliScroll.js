@@ -94,7 +94,7 @@ function LayerObject(layer) {
         this.layer.style.backgroundColor = color    
     }
 
-    this.setBackgroundColor(randomColor())
+    //this.setBackgroundColor(randomColor())
 }
 
 //creating the layers objects
