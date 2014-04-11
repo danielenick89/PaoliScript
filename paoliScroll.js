@@ -15,30 +15,27 @@ function LayerObject(layer) {
     this.current = 0
 
     this.scroll = function(percent) {
-        var ret = 0
 
-        if(this.top == -100 && percent < 0) {
-            return 0
+        if(this.top == -100 && percent < 0) {   //non posso gestirlo [scroll in giù]
+            return 1
         }
-        else if(this.top == 0 && percent > 0 ) {
-            return 0
+        else if(this.top == 0 && percent > 0) { //non posso gestirlo [scroll in sù]
+            return -1
         }
 
         this.top += percent
         if(this.top <= -100) {
             this.top = -100
-            ret = 1
             this.invertZIndex(-1)
         }
         else if(this.top >= 0) {
             this.top = 0
-            ret = -1
             this.invertZIndex(1)
         }
 
         this.refreshLayerTop()
 
-        return ret;
+        return 0;
     }
 
     this.setCurrent = function(bool) {
@@ -114,13 +111,16 @@ container.onmousewheel = function(e) {
     if(current < 0) current = 0
     if(current >= layers.length) current = layers.length - 1 
 
-    var ret = layerObjs[current].scroll(delta*deltaScroll)
-
+    var ret = layerObjs[current].scroll(delta*deltaScroll,current == 0, current == layers.length -1)
+    
     if(ret != 0 && layerObjs[current+ret] != undefined) {
         layerObjs[current].setCurrent(false)
         current += ret
         layerObjs[current].setCurrent(true)
     }
+
+    console.log(ret)
+    console.log(current)
 
 }
 
